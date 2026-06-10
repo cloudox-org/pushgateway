@@ -2,25 +2,29 @@
 %global user prometheus
 %global group prometheus
 
-Name: artifactory_exporter
-Version: 1.16.1
+Name:    pushgateway
+Version: 1.11.3
 Release: 1%{?dist}
-Summary: Prometheus exporter for JFrog Artifactory stats.
+Summary: Prometheus push acceptor for ephemeral and batch jobs.
 License: ASL 2.0
-URL:     https://github.com/peimanja/artifactory_exporter
+URL:     https://github.com/prometheus/pushgateway
 
-Source0: https://github.com/peimanja/artifactory_exporter/releases/download/v%{version}/%{name}-v%{version}-linux-amd64.tar.gz
+Source0: https://github.com/prometheus/pushgateway/releases/download/v%{version}/%{name}-%{version}.linux-amd64.tar.gz
 Source1: %{name}.unit
 Source2: %{name}.default
+Source3: _%{name}.init
 
 %{?systemd_requires}
 Requires(pre): shadow-utils
 
 %description
-Collects metrics about an Artifactory system
+The Prometheus Pushgateway exists to allow ephemeral and batch jobs to
+expose their metrics to Prometheus. Since these kinds of jobs may not
+exist long enough to be scraped, they can instead push their metrics to
+a Pushgateway. The Pushgateway then exposes these metrics to Prometheus.
 
 %prep
-%setup -q -D -c %{name}-v%{version}-linux-amd64
+%setup -q -n %{name}-%{version}.linux-amd64
 
 %build
 /bin/true
@@ -54,5 +58,5 @@ exit 0
 %{_unitdir}/%{name}.service
 
 %changelog
-* Thu Apr 02 2026 Ivan Garcia <igarcia@cloudox.org> - 1.16.1
-- Initial packaging for the 1.16.1 branch
+* Wed Jun 10 2026 Ivan Garcia <igarcia@cloudox.org> - 1.11.3
+- Initial packaging for the 1.11.3 branch
